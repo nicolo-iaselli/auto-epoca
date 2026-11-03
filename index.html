@@ -14,7 +14,7 @@ img { max-width: 100%; }
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: a buyer's dossier. Market map first, then one file per model: photo + identity, numbers, faults, examples. */
 :root {
@@ -35,7 +35,7 @@ img { max-width: 100%; }
   --ok: #2f6b45;
   --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
   --body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --num: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;  /* figures: tabular lining digits */
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -69,7 +69,7 @@ a { color: inherit; text-decoration-color: color-mix(in srgb, currentColor 40%, 
 a:hover { text-decoration-color: currentColor; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 h1, h2, h3 { text-wrap: balance; margin: 0; }
-.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.num { font-family: var(--num); font-variant-numeric: tabular-nums; }
 .label { font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 
 /* Masthead */
@@ -102,17 +102,17 @@ section.block { padding-block: 40px 8px; display: grid; gap: 18px; }
 .strip-label a { font-weight: 600; text-decoration: none; }
 .strip-label a:hover { text-decoration: underline; }
 .strip-label small { color: var(--muted); font-size: 12.5px; }
-.track { position: relative; height: 34px; }
+.track { position: relative; height: 34px; margin-right: 38px; }  /* gutter for the over-200k count */
 .track .band { position: absolute; top: 0; bottom: 0; background: var(--band); border-left: 1px dashed var(--band-edge); border-right: 1px dashed var(--band-edge); }
 .track .iqr { position: absolute; top: 8px; bottom: 8px; border: 1px solid var(--muted); border-radius: 2px; opacity: .55; }
 .track .med { position: absolute; top: 3px; bottom: 3px; width: 3px; margin-left: -1.5px; background: var(--accent); border-radius: 2px; }
 .track a.dot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1.5px solid var(--dot-eu); background: transparent; }
 .track a.dot.it { background: var(--dot-it); border-color: var(--dot-it); }
 .track a.dot:hover, .track a.dot:focus-visible { transform: scale(1.6); z-index: 2; }
-.track .over { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); font: 500 11px var(--mono); color: var(--muted); background: var(--paper); padding-left: 3px; }
+.track .over { position: absolute; left: 100%; margin-left: 8px; top: 50%; transform: translateY(-50%); font: 600 11.5px var(--num); color: var(--muted); white-space: nowrap; }
 .axis { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 14px; }
-.axis .ticks { position: relative; height: 20px; }
-.axis .ticks span { position: absolute; transform: translateX(-50%); font: 11px var(--mono); color: var(--muted); white-space: nowrap; }
+.axis .ticks { position: relative; height: 20px; margin-right: 38px; }
+.axis .ticks span { position: absolute; transform: translateX(-50%); font: 500 11.5px var(--num); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); }
 .legend i { display: inline-block; vertical-align: -1px; margin-right: 6px; }
 .lg-it { width: 9px; height: 9px; border-radius: 50%; background: var(--dot-it); }
@@ -135,8 +135,9 @@ td .sub { display: block; color: var(--muted); font-size: 12.5px; }
 .models { display: grid; gap: 28px; padding-top: 12px; }
 article.model { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; scroll-margin-top: 16px; }
 .model-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
-.photo { margin: 0; position: relative; background: var(--rule); min-height: 240px; }
-.photo img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4 / 3; }
+.photo { margin: 0; position: relative; align-self: start; }  /* natural aspect: the whole car stays in frame */
+.photo:empty { min-height: 240px; align-self: stretch; background: var(--rule); }
+.photo img { display: block; width: 100%; height: auto; }
 .photo figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 12px 6px; font-size: 11px; color: #f2f2f2; background: linear-gradient(transparent, rgba(0,0,0,.55)); }
 .photo figcaption a { color: #f2f2f2; }
 .ident { padding: 24px 26px; display: grid; gap: 14px; align-content: start; min-width: 0; }
@@ -154,7 +155,7 @@ article.model { background: var(--sheet); border: 1px solid var(--rule); border-
 .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: 4px; margin-bottom: 14px; }
 .kpi { padding: 10px 12px; border-left: 1px solid var(--rule); display: grid; gap: 2px; min-width: 0; }
 .kpi:first-child { border-left: 0; }
-.kpi .v { font: 500 19px var(--mono); font-variant-numeric: tabular-nums; }
+.kpi .v { font: 600 19px var(--num); font-variant-numeric: tabular-nums; }
 .kpi .v.hi { color: var(--accent); }
 .kpi small { color: var(--muted); font-size: 12px; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; }
@@ -188,7 +189,7 @@ article.model { background: var(--sheet); border: 1px solid var(--rule); border-
 .examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
 .ex { border: 1px solid var(--rule); border-radius: 4px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; background: var(--paper); }
 .ex .top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
-.ex .price { font: 500 20px var(--mono); color: var(--accent); white-space: nowrap; }
+.ex .price { font: 600 20px var(--num); font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap; }
 .ex h4 { margin: 0; font-size: 15px; font-weight: 600; }
 .ex .meta { font-size: 13px; color: var(--muted); }
 .ex p { margin: 0; font-size: 14px; }
